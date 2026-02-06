@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Admin Login | EduConnect{% endblock %}
+
+{% block extra_css %}
+<style>
+  body{background:#eaf0ff}
+  .wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .card{
+    width:min(440px,100%);
+    background:#fff;border:1px solid #e3e9ff;border-radius:20px;
+    box-shadow:0 18px 40px rgba(15,23,42,.10);
+    padding:22px;
+  }
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .logo{
+    width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,#1b56d7,#ff7a18);
+    display:grid;place-items:center;color:#fff;font-weight:950
+  }
+  h1{margin:0;font-size:22px;font-weight:950}
+  .sub{color:#64748b;font-size:13px;font-weight:800;margin-top:4px}
+
+  .error-msg{
+    background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;
+    padding:10px 12px;border-radius:14px;font-weight:900;font-size:13px;
+    margin:12px 0;
+  }
+
+  .field{margin-top:14px}
+  label{display:block;font-size:13px;font-weight:900;color:#0f172a;margin-bottom:6px}
+  input{
+    width:100%;padding:12px 14px;border-radius:14px;border:1px solid #e3e9ff;
+    outline:none;font-size:14px;background:#fbfdff;
+  }
+  input:focus{border-color:#1b56d7;box-shadow:0 0 0 4px rgba(27,86,215,.12)}
+  .btn{
+    width:100%;margin-top:16px;padding:12px 14px;border-radius:14px;border:0;
+    background:#1b56d7;color:#fff;font-weight:950;font-size:14px;cursor:pointer;
+    box-shadow:0 14px 30px rgba(27,86,215,.20);
+  }
+  .note{margin-top:12px;color:#64748b;font-size:12px;font-weight:800}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="card">
+    <div class="brand">
+      <div class="logo">E</div>
+      <div>
+        <h1>EduConnect Admin Panel</h1>
+        <div class="sub">Login to continue (no register)</div>
+      </div>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error-msg">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="admin@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </div>
+      <button class="btn" type="submit">Login</button>
+      <div class="note">Only admins can access this panel.</div>
+    </form>
+  </div>
+</div>
+{% endblock %}

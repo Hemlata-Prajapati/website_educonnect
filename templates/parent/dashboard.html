@@ -1,0 +1,242 @@
+{% extends "parent/base_parent.html" %}
+{% block parent_title %}Parent Dashboard | EduConnect{% endblock %}
+
+{% block parent_extra_css %}
+<style>
+  .welcome h2{margin:6px 0 6px;font-size:40px;font-weight:950}
+  .welcome .meta{color:#64748b;font-size:14px;font-weight:800;margin-top:6px}
+
+  /* KPI cards */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px}
+  .kpi{
+    border-radius:18px;border:1px solid #dbe7ff;box-shadow:0 14px 30px rgba(15,23,42,.08);
+    padding:14px 14px 14px;min-height:110px;position:relative;overflow:hidden;
+  }
+  .kpi h3{margin:0;font-size:22px;font-weight:950;display:flex;align-items:center;gap:10px}
+  .kpi .sub{margin-top:16px;font-weight:950;font-size:18px}
+  .kpi .sub span{font-weight:900;color:#0f172a}
+  .kpi.blue{background:#3b82f6;color:#0b1220}
+  .kpi.green{background:#10b981;color:#0b1220}
+  .kpi.orange{background:#f59e0b;color:#0b1220}
+  .kpi.red{background:#ef4444;color:#0b1220}
+  .kpi .small{font-size:14px;font-weight:900;margin-top:10px;color:#0b1220;opacity:.9}
+  .kpi .pill{
+    display:inline-block;margin-top:10px;background:rgba(255,255,255,.28);
+    border:1px solid rgba(255,255,255,.45);padding:6px 10px;border-radius:999px;font-weight:950
+  }
+
+  /* mid row */
+  .mid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:18px}
+
+  /* performance (static SVG line) */
+  .chartBox{height:240px;position:relative}
+  .svgWrap{margin-top:6px;border-radius:14px;background:#f7faff;border:1px solid #e8efff;padding:10px;height:190px}
+  .axis{position:absolute;left:18px;bottom:18px;color:#94a3b8;font-size:11px;font-weight:800}
+  .xlabels{display:flex;justify-content:space-between;color:#94a3b8;font-size:11px;font-weight:800;margin-top:6px;padding:0 6px}
+
+  /* donut */
+  .donutWrap{display:flex;align-items:center;gap:22px;margin-top:10px}
+  .donut{
+    width:170px;height:170px;border-radius:999px;
+    background:conic-gradient(#0b3ea8 0 70%, #d1d5db 70% 100%);
+    display:grid;place-items:center;border:10px solid #fff;box-shadow:0 10px 22px rgba(15,23,42,.10);
+  }
+  .donut .inner{
+    width:110px;height:110px;border-radius:999px;background:#fff;border:1px solid #eef3ff;
+    display:grid;place-items:center;font-weight:950;font-size:22px;
+  }
+  .absTxt{font-size:26px;font-weight:950;line-height:1.1}
+  .absTxt span{display:block;color:#64748b;font-size:16px;font-weight:900;margin-top:6px}
+
+  /* bottom */
+  .bottom{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:18px}
+
+  .noteList{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+  .nitem{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid #eef3ff}
+  .nitem:first-child{border-top:0;padding-top:0}
+  .nicon{
+    width:34px;height:34px;border-radius:12px;background:#eef4ff;border:1px solid #e6ecff;
+    display:grid;place-items:center
+  }
+  .ntext b{display:block;font-size:14px}
+  .ntext span{display:block;color:#64748b;font-size:13px;margin-top:4px}
+
+  /* fee table */
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #eef3ff;font-size:14px}
+  th{color:#0f172a;font-weight:950}
+  td{color:#0f172a;font-weight:800}
+  .status{font-weight:950}
+  .paid{color:#0b3ea8}
+  .pending{color:#ef4444}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:10px 14px;border-radius:12px;border:1px solid #dbe7ff;background:#f6f9ff;
+    color:#1b56d7;font-weight:950;margin-top:12px;float:right;
+  }
+
+  @media(max-width:1200px){
+    .kpis{grid-template-columns:1fr 1fr}
+    .mid,.bottom{grid-template-columns:1fr}
+  }
+</style>
+{% endblock %}
+
+{% block parent_content %}
+  <section class="welcome">
+    <h2>Welcome back, {{ display_name }}!</h2>
+    <div class="meta">Child: Priya Sharma | Grade 10-B</div>
+    <div class="meta">Last Login : 12 Oct 2025</div>
+  </section>
+
+  <!-- KPI row -->
+  <section class="kpis">
+    <div class="kpi blue">
+      <h3>📊 Academic Progress</h3>
+      <div class="sub">87% <span>Overall Grade</span></div>
+    </div>
+
+    <div class="kpi green">
+      <h3>🧑‍🎓 Attendance</h3>
+      <div class="sub">90% <span>This Month</span></div>
+    </div>
+
+    <div class="kpi orange">
+      <h3>💳 Fee Status</h3>
+      <div class="sub">25,0000 <span>Pending</span></div>
+    </div>
+
+    <div class="kpi red">
+      <h3>🧾 Next Exam</h3>
+      <div class="sub">Maths <span style="margin-left:10px">15 Oct</span></div>
+    </div>
+  </section>
+
+  <!-- Mid -->
+  <section class="mid">
+    <div class="card pad">
+      <div style="font-size:30px;font-weight:950;margin-bottom:8px">Performance Overview</div>
+
+      <div class="svgWrap">
+        <svg viewBox="0 0 700 220" width="100%" height="100%" preserveAspectRatio="none">
+          <!-- grid -->
+          <g opacity="0.25">
+            <line x1="60" y1="30" x2="680" y2="30" stroke="#94a3b8"/>
+            <line x1="60" y1="80" x2="680" y2="80" stroke="#94a3b8"/>
+            <line x1="60" y1="130" x2="680" y2="130" stroke="#94a3b8"/>
+            <line x1="60" y1="180" x2="680" y2="180" stroke="#94a3b8"/>
+            <line x1="60" y1="30" x2="60" y2="190" stroke="#94a3b8"/>
+          </g>
+
+          <!-- area -->
+          <path d="M100,140 L240,170 L380,120 L520,140 L660,60 L660,190 L100,190 Z"
+                fill="#4f46e5" opacity="0.18"/>
+          <!-- line -->
+          <path d="M100,140 L240,170 L380,120 L520,140 L660,60"
+                fill="none" stroke="#1b56d7" stroke-width="4"/>
+
+          <!-- points -->
+          <circle cx="100" cy="140" r="5" fill="#1b56d7"/>
+          <circle cx="240" cy="170" r="5" fill="#1b56d7"/>
+          <circle cx="380" cy="120" r="5" fill="#1b56d7"/>
+          <circle cx="520" cy="140" r="5" fill="#1b56d7"/>
+          <circle cx="660" cy="60" r="5" fill="#1b56d7"/>
+        </svg>
+
+        <div class="xlabels">
+          <div>Maths</div><div>Physics</div><div>English</div><div>Chemistry</div><div>Computer Science</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card pad">
+      <div style="font-size:30px;font-weight:950;margin-bottom:8px">Attendance Summary</div>
+      <div class="donutWrap">
+        <div class="donut">
+          <div class="inner">70%</div>
+        </div>
+        <div class="absTxt">
+          6 Absences<br/>This Month
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom -->
+  <section class="bottom">
+    <div class="card pad">
+      <div style="font-size:30px;font-weight:950;margin-bottom:8px">Recent Notifications</div>
+      <div class="noteList">
+        <div class="nitem">
+          <div class="nicon">🇮🇳</div>
+          <div class="ntext">
+            <b>Parent-Teacher meeting schedule on 30 Oct.</b>
+          </div>
+        </div>
+        <div class="nitem">
+          <div class="nicon">🧾</div>
+          <div class="ntext">
+            <b>Mid-term result will be released on 1 Nov.</b>
+          </div>
+        </div>
+        <div class="nitem">
+          <div class="nicon">💰</div>
+          <div class="ntext">
+            <b>Tuition fee of ₹25,000 is due on 25 Oct 2025.</b>
+          </div>
+        </div>
+        <div class="nitem">
+          <div class="nicon">🎉</div>
+          <div class="ntext">
+            <b>Priya scored 88% in Mathematics excellent!</b>
+          </div>
+        </div>
+        <div class="nitem">
+          <div class="nicon">📣</div>
+          <div class="ntext">
+            <b>School will remain closed on 15 Oct (Dussehra).</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card pad">
+      <div style="font-size:30px;font-weight:950;margin-bottom:8px">Fee Overview</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Fee Type</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tuition Fee</td>
+            <td>22000</td>
+            <td class="status pending">Pending</td>
+            <td>10 Oct</td>
+          </tr>
+          <tr>
+            <td>Course Fee</td>
+            <td>15000</td>
+            <td class="status paid">Paid</td>
+            <td>30 Oct</td>
+          </tr>
+          <tr>
+            <td>School Fee</td>
+            <td>8000</td>
+            <td class="status paid">Paid</td>
+            <td>10 Oct</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <a class="btn" href="#" title="Placeholder">🧾 View Invoices</a>
+      <div style="clear:both"></div>
+    </div>
+  </section>
+{% endblock %}

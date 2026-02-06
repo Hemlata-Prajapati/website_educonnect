@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}EduConnect{% endblock %}</title>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  {% if messages %}
+    <div style="padding:10px;max-width:900px;margin:10px auto;">
+      {% for message in messages %}
+        <div style="padding:10px;border-radius:10px;margin-bottom:8px;border:1px solid #ddd;background:#fff;">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

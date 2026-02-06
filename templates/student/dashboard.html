@@ -1,0 +1,210 @@
+{% extends "student/base_student.html" %}
+{% block student_title %}Student Dashboard | EduConnect{% endblock %}
+
+{% block student_extra_css %}
+<style>
+  .banner{
+    background:linear-gradient(90deg,#18a7ff,#53c7ff);
+    border-radius:22px;border:1px solid rgba(255,255,255,.35);
+    box-shadow:0 18px 40px rgba(15,23,42,.10);
+    padding:26px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+    overflow:hidden;
+  }
+  .btxt h1{margin:0;color:#fff;font-size:34px;font-weight:950;letter-spacing:.2px}
+  .btxt p{margin:8px 0 14px;color:rgba(255,255,255,.92);font-size:15px}
+  .bbtn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:10px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.45);
+    color:#fff;font-weight:900;background:rgba(255,255,255,.12)
+  }
+  .bbtn:hover{background:rgba(255,255,255,.18)}
+  .books{
+    width:260px;flex:0 0 260px;display:flex;justify-content:flex-end;
+  }
+  .books .pile{
+    width:230px;height:150px;border-radius:18px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.25);
+    display:grid;place-items:center;
+    font-size:70px;
+  }
+
+  .h2{margin:18px 0 12px;font-size:34px;font-weight:950}
+  .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .course{
+    background:#fff;border:1px solid #dbe7ff;border-radius:22px;
+    box-shadow:0 14px 30px rgba(15,23,42,.08);overflow:hidden;
+  }
+  .thumb{
+    height:170px;background:linear-gradient(135deg,#0b3ea8,#052d66);
+    display:grid;place-items:center;color:#fff;font-weight:950;font-size:42px;
+  }
+  .thumb.python{background:linear-gradient(135deg,#0c5b6d,#0a2f52)}
+  .thumb.uiux{background:linear-gradient(135deg,#cfd4dc,#ffffff);color:#334155}
+  .cbody{padding:14px 14px 12px}
+  .ctitle{font-size:18px;font-weight:950;margin:0}
+  .clink{display:inline-block;margin-top:6px;color:#1b56d7;font-weight:800;font-size:13px}
+  .priceBox{
+    margin-top:10px;background:#f3f7ff;border:1px solid #e4ecff;border-radius:14px;
+    padding:10px;display:flex;gap:10px;justify-content:space-between
+  }
+  .pill{
+    flex:1;background:#fff;border:1px solid #e1eaff;border-radius:12px;
+    padding:8px;text-align:center
+  }
+  .pill .top{font-size:10px;color:#64748b;font-weight:900}
+  .pill .amt{font-size:16px;font-weight:950;margin-top:2px}
+  .pill .sub{font-size:10px;color:#1b56d7;font-weight:900}
+
+  .mentorsRow{
+    margin-top:18px;
+    display:grid;grid-template-columns:repeat(3,1fr) 160px;
+    gap:18px;align-items:stretch;
+  }
+  .mentor{
+    text-align:center;padding:18px;border-radius:22px;border:1px solid #dbe7ff;background:#fff;
+    box-shadow:0 12px 26px rgba(15,23,42,.07);
+  }
+  .avatar{
+    width:120px;height:120px;border-radius:999px;margin:0 auto 10px;
+    background:linear-gradient(135deg,#e7eefc,#ffffff);
+    border:1px solid #e1eaff;display:grid;place-items:center;font-size:44px;
+  }
+  .mname{font-weight:950;margin:0;font-size:16px}
+  .mrole{color:#64748b;margin:6px 0 0;font-size:13px}
+  .mview{display:inline-block;margin-top:10px;color:#1b56d7;font-weight:900;font-size:13px}
+  .stars{margin-top:10px;letter-spacing:2px;font-size:18px}
+
+  .seeAll{
+    background:#5bb3ff;border:1px solid rgba(255,255,255,.6);
+    border-radius:22px;box-shadow:0 18px 40px rgba(15,23,42,.12);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:950;color:#fff;font-size:22px;
+  }
+
+  @media(max-width:1100px){
+    .courses{grid-template-columns:1fr}
+    .mentorsRow{grid-template-columns:1fr}
+    .seeAll{height:90px}
+    .banner{flex-direction:column;align-items:flex-start}
+    .books{width:100%;justify-content:flex-end}
+  }
+</style>
+{% endblock %}
+
+{% block student_content %}
+  <!-- Banner -->
+  <section class="banner">
+    <div class="btxt">
+      <h1>Welcome back, {{ display_name }}!</h1>
+      <p>Sharpen Your Skills With Professional<br/>Online Courses</p>
+      <a class="bbtn" href="#" title="Placeholder">Continue Learning →</a>
+    </div>
+    <div class="books">
+      <div class="pile">📚</div>
+    </div>
+  </section>
+
+  <h2 class="h2">Recommended Courses For You</h2>
+
+  <!-- Courses -->
+  <section class="courses">
+    <!-- Course 1 -->
+    <article class="course">
+      <div class="thumb python">🐍</div>
+      <div class="cbody">
+        <p class="ctitle">Python Programming</p>
+        <a class="clink" href="#" title="Placeholder">View Course Details &gt;</a>
+
+        <div class="priceBox">
+          <div class="pill">
+            <div class="top">One on one session</div>
+            <div class="amt">$159<span style="font-size:10px;font-weight:900;color:#64748b">/mo</span></div>
+            <div class="sub">Buy Now &gt;</div>
+          </div>
+          <div class="pill">
+            <div class="top">Group Session</div>
+            <div class="amt">$119<span style="font-size:10px;font-weight:900;color:#64748b">/mo</span></div>
+            <div class="sub">Buy Now &gt;</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Course 2 -->
+    <article class="course">
+      <div class="thumb">💻</div>
+      <div class="cbody">
+        <p class="ctitle">DSA Using C++</p>
+        <a class="clink" href="#" title="Placeholder">View Course Details &gt;</a>
+
+        <div class="priceBox">
+          <div class="pill">
+            <div class="top">One on one session</div>
+            <div class="amt">$159<span style="font-size:10px;font-weight:900;color:#64748b">/mo</span></div>
+            <div class="sub">Buy Now &gt;</div>
+          </div>
+          <div class="pill">
+            <div class="top">Group Session</div>
+            <div class="amt">$119<span style="font-size:10px;font-weight:900;color:#64748b">/mo</span></div>
+            <div class="sub">Buy Now &gt;</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Course 3 -->
+    <article class="course">
+      <div class="thumb uiux">🎨</div>
+      <div class="cbody">
+        <p class="ctitle">UI/UX Designing</p>
+        <a class="clink" href="#" title="Placeholder">View Course Details &gt;</a>
+
+        <div class="priceBox">
+          <div class="pill">
+            <div class="top">One on one session</div>
+            <div class="amt">$159<span style="font-size:10px;font-weight:900;color:#64748b">/mo</span></div>
+            <div class="sub">Buy Now &gt;</div>
+          </div>
+          <div class="pill">
+            <div class="top">Group Session</div>
+            <div class="amt">$119<span style="font-size:10px;font-weight:900;color:#64748b">/mo</span></div>
+            <div class="sub">Buy Now &gt;</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Mentors + See All -->
+  <section class="mentorsRow">
+    <div class="mentor">
+      <div class="avatar">👨‍🏫</div>
+      <p class="mname">Rahul Kumar</p>
+      <p class="mrole">DSA</p>
+      <a class="mview" href="#" title="Placeholder">View Profile &gt;</a>
+      <div class="mrole" style="margin-top:10px">Rating</div>
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+    </div>
+
+    <div class="mentor">
+      <div class="avatar">👩‍🏫</div>
+      <p class="mname">Priya Sharma</p>
+      <p class="mrole">Python</p>
+      <a class="mview" href="#" title="Placeholder">View Profile &gt;</a>
+      <div class="mrole" style="margin-top:10px">Rating</div>
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+    </div>
+
+    <div class="mentor">
+      <div class="avatar">👩‍💻</div>
+      <p class="mname">Nia Sharma</p>
+      <p class="mrole">UI/UX</p>
+      <a class="mview" href="#" title="Placeholder">View Profile &gt;</a>
+      <div class="mrole" style="margin-top:10px">Rating</div>
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+    </div>
+
+    <a class="seeAll" href="#" title="Placeholder">See All</a>
+  </section>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "admin_panel/base_admin.html" %}
+
+{% block admin_title %}Admin | Refund Requests{% endblock %}
+
+{% block admin_content %}
+<div class="card pad">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>
+      <h2 style="margin:0;font-size:26px;font-weight:950">Refund Requests</h2>
+      <p style="margin:6px 0 0;color:var(--muted);font-weight:800">
+        View and manage refund requests from students/parents.
+      </p>
+    </div>
+
+    <div style="display:flex;gap:10px;align-items:center">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 14px;box-shadow:var(--shadow2);display:flex;gap:10px;align-items:center">
+        <span style="opacity:.7;font-weight:900">🔎</span>
+        <input type="text" placeholder="Search by name / order id"
+               style="border:0;outline:none;background:transparent;min-width:260px;font-weight:800" />
+      </div>
+      <button type="button"
+              style="border:0;background:#1b56d7;color:#fff;font-weight:950;padding:12px 14px;border-radius:14px;box-shadow:var(--shadow2);cursor:pointer">
+        Export
+      </button>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;overflow:auto;border:1px solid var(--line);border-radius:16px">
+    <table style="width:100%;border-collapse:collapse;background:#fff">
+      <thead>
+        <tr style="background:#f6f9ff">
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">Request ID</th>
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">User</th>
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">Amount</th>
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">Reason</th>
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">Date</th>
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">Status</th>
+          <th style="text-align:left;padding:12px 14px;font-weight:950;border-bottom:1px solid var(--line)">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Static rows for now -->
+        <tr>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;font-weight:900">RR-1001</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;font-weight:900">Aman Kumar</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;font-weight:900">₹ 2,499</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;color:var(--muted);font-weight:800">Duplicate payment</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;color:var(--muted);font-weight:800">Feb 05, 2026</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff">
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff7ed;border:1px solid #fed7aa;font-weight:950">
+              ⏳ Pending
+            </span>
+          </td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff">
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button type="button" style="border:0;background:#10b981;color:#fff;font-weight:950;padding:10px 12px;border-radius:12px;cursor:pointer">Approve</button>
+              <button type="button" style="border:1px solid var(--line);background:#fff;font-weight:950;padding:10px 12px;border-radius:12px;cursor:pointer">Reject</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;font-weight:900">RR-1002</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;font-weight:900">Priya Sharma</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;font-weight:900">₹ 999</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;color:var(--muted);font-weight:800">Course not started</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff;color:var(--muted);font-weight:800">Feb 04, 2026</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff">
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#ecfdf5;border:1px solid #bbf7d0;font-weight:950">
+              ✅ Approved
+            </span>
+          </td>
+          <td style="padding:12px 14px;border-bottom:1px solid #eef3ff">
+            <button type="button" style="border:1px solid var(--line);background:#fff;font-weight:950;padding:10px 12px;border-radius:12px;cursor:pointer">
+              View
+            </button>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:12px 14px;font-weight:900">RR-1003</td>
+          <td style="padding:12px 14px;font-weight:900">Rahul Verma</td>
+          <td style="padding:12px 14px;font-weight:900">₹ 1,499</td>
+          <td style="padding:12px 14px;color:var(--muted);font-weight:800">Payment failed but money debited</td>
+          <td style="padding:12px 14px;color:var(--muted);font-weight:800">Feb 03, 2026</td>
+          <td style="padding:12px 14px">
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fef2f2;border:1px solid #fecaca;font-weight:950">
+              ❌ Rejected
+            </span>
+          </td>
+          <td style="padding:12px 14px">
+            <button type="button" style="border:1px solid var(--line);background:#fff;font-weight:950;padding:10px 12px;border-radius:12px;cursor:pointer">
+              View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

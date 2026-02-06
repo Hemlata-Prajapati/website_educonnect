@@ -1,0 +1,227 @@
+{% extends "admin_panel/base_admin.html" %}
+{% block admin_title %}Admin Dashboard | EduConnect{% endblock %}
+
+{% block admin_extra_css %}
+<style>
+  .title{
+    display:flex;align-items:center;gap:12px;margin-top:4px;
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+  }
+  .title .bigIcon{font-size:34px}
+  .title h1{margin:0;font-size:54px;font-weight:900}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:14px}
+  .kpi{
+    border-radius:18px;min-height:170px;position:relative;overflow:hidden;
+    padding:14px 16px;color:#0b1220;border:1px solid rgba(255,255,255,.30);
+    box-shadow:0 12px 26px rgba(15,23,42,.10);
+  }
+  .kpi h3{margin:0;font-size:26px;font-weight:900;line-height:1.05}
+  .kpi .num{margin-top:6px;font-size:26px;font-weight:900}
+  .kpi svg{position:absolute;left:12px;right:12px;bottom:10px;height:80px}
+  .kpi .label{
+    position:absolute;left:0;right:0;bottom:6px;text-align:center;
+    font-weight:900;font-size:14px;color:#fff;opacity:.95
+  }
+  .k1{background:#3b82f6}
+  .k2{background:#10b981}
+  .k3{background:#f59e0b}
+  .k4{background:#ef4444}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:22px;
+    box-shadow:var(--shadow2);padding:20px
+  }
+  .card h2{margin:0 0 12px;font-size:26px;font-weight:900}
+  .row3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:18px;margin-top:18px}
+
+  /* donut */
+  .donutWrap{display:flex;align-items:center;gap:18px}
+  .donut{
+    width:220px;height:220px;border-radius:999px;
+    background:conic-gradient(#ec4899 0 50%, #06b6d4 50% 100%);
+    display:grid;place-items:center;border:14px solid #fff;
+  }
+  .donut .inner{width:130px;height:130px;border-radius:999px;background:#fff;border:1px solid #eef3ff}
+  .legend{display:flex;flex-direction:column;gap:18px;font-weight:900;font-size:22px}
+  .pill{display:flex;align-items:center;gap:12px}
+  .dot{width:22px;height:22px;border-radius:999px}
+  .dot.paid{background:#ec4899}
+  .dot.unpaid{background:#06b6d4}
+
+  /* growth */
+  .growthWrap{display:flex;gap:18px;align-items:flex-start}
+  .chartMock{
+    flex:1;height:260px;border-radius:16px;background:#ffffff;border:1px solid #e8efff;
+    padding:10px;
+  }
+  .labels{display:flex;justify-content:space-between;color:#94a3b8;font-size:14px;font-weight:900;margin-top:6px;padding:0 6px}
+  .gLegend{width:180px;font-weight:900;font-size:22px}
+  .gLegend .line{display:flex;align-items:center;gap:12px}
+  .gLegend .c{width:18px;height:18px;border-radius:999px}
+
+  /* recent list */
+  .list{margin-top:10px;border-top:1px solid #eef3ff}
+  .item{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #eef3ff}
+  .item:last-child{border-bottom:0}
+  .ileft{display:flex;align-items:center;gap:12px;font-weight:900;font-size:20px}
+  .iico{
+    width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid #e6ecff;
+    display:grid;place-items:center
+  }
+  .itime{color:#64748b;font-size:16px;font-weight:900;white-space:nowrap}
+
+  @media(max-width:1200px){
+    .kpis{grid-template-columns:1fr 1fr}
+    .grid2{grid-template-columns:1fr}
+    .row3{grid-template-columns:1fr}
+    .title h1{font-size:40px}
+  }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="title">
+  <div class="bigIcon">🧑‍💼</div>
+  <h1>Admin Dashboard</h1>
+</div>
+
+<section class="kpis">
+  <div class="kpi k1">
+    <h3>Total Students</h3>
+    <div class="num">1,245</div>
+    <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+      <path d="M10,70 L60,70 L90,55 L120,58 L150,35 L180,40 L210,20 L240,28 L290,10"
+            fill="none" stroke="#ff2bd6" stroke-width="5" />
+      <path d="M10,80 L290,80" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+      <path d="M10,80 L10,10" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+    </svg>
+    <div class="label">Students</div>
+  </div>
+
+  <div class="kpi k2">
+    <h3>Total Faculty</h3>
+    <div class="num">750</div>
+    <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+      <path d="M10,70 L60,65 L90,60 L120,55 L150,45 L180,40 L210,33 L240,26 L290,18"
+            fill="none" stroke="#064e3b" stroke-width="5" />
+      <path d="M10,80 L290,80" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+      <path d="M10,80 L10,10" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+    </svg>
+    <div class="label">Faculty</div>
+  </div>
+
+  <div class="kpi k3">
+    <h3>Total Parents</h3>
+    <div class="num">1,120</div>
+    <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+      <path d="M10,70 L60,66 L90,60 L120,52 L150,48 L180,36 L210,30 L240,22 L290,14"
+            fill="none" stroke="#ff2bd6" stroke-width="5" />
+      <path d="M10,80 L290,80" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+      <path d="M10,80 L10,10" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+    </svg>
+    <div class="label">Parents</div>
+  </div>
+
+  <div class="kpi k4">
+    <h3>Revenue Collected</h3>
+    <div class="num">$50,300</div>
+    <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+      <path d="M10,72 L60,70 L90,62 L120,60 L150,48 L180,44 L210,34 L240,28 L290,18"
+            fill="none" stroke="#00e5ff" stroke-width="5" />
+      <path d="M10,80 L290,80" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+      <path d="M10,80 L10,10" stroke="rgba(255,255,255,.85)" stroke-width="4"/>
+    </svg>
+    <div class="label">Revenue</div>
+  </div>
+</section>
+
+<section class="grid2">
+  <div class="card">
+    <h2>Payments Overview</h2>
+    <div class="donutWrap">
+      <div class="donut"><div class="inner"></div></div>
+      <div class="legend">
+        <div class="pill"><span class="dot paid"></span> Paid</div>
+        <div class="pill"><span class="dot unpaid"></span> Unpaid</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>User Growth Over Time</h2>
+    <div class="growthWrap">
+      <div class="chartMock">
+        <svg viewBox="0 0 700 220" width="100%" height="100%" preserveAspectRatio="none">
+          <g opacity="0.25">
+            <line x1="60" y1="30" x2="680" y2="30" stroke="#94a3b8"/>
+            <line x1="60" y1="80" x2="680" y2="80" stroke="#94a3b8"/>
+            <line x1="60" y1="130" x2="680" y2="130" stroke="#94a3b8"/>
+            <line x1="60" y1="180" x2="680" y2="180" stroke="#94a3b8"/>
+          </g>
+          <path d="M100,160 L180,150 L260,120 L340,125 L420,90 L500,95 L580,70 L660,40" fill="none" stroke="#2563eb" stroke-width="4"/>
+          <path d="M100,170 L180,160 L260,140 L340,145 L420,110 L500,120 L580,100 L660,70" fill="none" stroke="#22c55e" stroke-width="4"/>
+          <path d="M100,190 L180,175 L260,160 L340,165 L420,140 L500,150 L580,135 L660,120" fill="none" stroke="#ec4899" stroke-width="4"/>
+        </svg>
+        <div class="labels">
+          <div>Jan</div><div>Feb</div><div>Mar</div><div>Apr</div><div>May</div><div>June</div>
+          <div>July</div><div>Aug</div><div>Sep</div><div>Oct</div><div>Nov</div><div>Dec</div>
+        </div>
+      </div>
+
+      <div class="gLegend">
+        <div class="line"><span class="c" style="background:#2563eb"></span> Faculty</div>
+        <div class="line"><span class="c" style="background:#22c55e"></span> Student</div>
+        <div class="line"><span class="c" style="background:#ec4899"></span> Parent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row3">
+  <div class="card">
+    <h2>Recent Activities</h2>
+    <div class="list">
+      <div class="item">
+        <div class="ileft"><div class="iico">🎓</div> New student added</div>
+        <div class="itime">Sep 4 9:39 AM</div>
+      </div>
+      <div class="item">
+        <div class="ileft"><div class="iico">👩‍🏫</div> New faculty member</div>
+        <div class="itime">Sep 5 1:00 PM</div>
+      </div>
+      <div class="item">
+        <div class="ileft"><div class="iico">💰</div> Collected fee</div>
+        <div class="itime">Sep 7 2:39 PM</div>
+      </div>
+      <div class="item">
+        <div class="ileft"><div class="iico">📄</div> Report generated</div>
+        <div class="itime">Sep 9 3:00 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Pending Approvals</h2>
+    <div style="display:flex;flex-direction:column;gap:18px;margin-top:12px;font-weight:900;font-size:22px">
+      <div style="display:flex;align-items:center;gap:12px"><span class="iico">🧑</span> Pending Student</div>
+      <div style="display:flex;align-items:center;gap:12px"><span class="iico">💲</span> Pending Refund</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Upcoming Deadline</h2>
+    <div style="display:flex;flex-direction:column;gap:18px;margin-top:12px;font-weight:900;font-size:22px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="iico">🗓️</span> Exam Schedule <span style="margin-left:auto;color:#64748b">Sep 5</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="iico">💳</span> Fee due <span style="margin-left:auto;color:#64748b">Sep 15</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

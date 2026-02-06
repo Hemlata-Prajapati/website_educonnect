@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}{% block admin_title %}Admin | EduConnect{% endblock %}{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root{
+    --bg:#eaf0ff; --card:#fff; --line:#e3e9ff; --text:#0f172a; --muted:#64748b;
+    --shadow2:0 10px 25px rgba(15,23,42,.08);
+  }
+  body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
+  *{box-sizing:border-box}
+  a{text-decoration:none;color:inherit}
+
+  .layout{display:flex;gap:22px;padding:22px;min-height:100vh}
+  .sidebar{
+    width:300px;background:rgba(255,255,255,.92);
+    border:1px solid var(--line);border-radius:24px;
+    box-shadow:var(--shadow2);
+    padding:18px 16px;position:sticky;top:18px;height:calc(100vh - 44px);
+    overflow:auto;
+  }
+
+  .brand{display:flex;align-items:center;gap:12px;padding:10px 10px 16px}
+  .logo{
+    width:44px;height:44px;border-radius:16px;
+    background:linear-gradient(135deg,#1b56d7,#ff7a18);
+    display:grid;place-items:center;color:#fff;font-weight:950;
+  }
+  .brand h2{margin:0;font-size:30px;font-weight:900}
+
+  .nav{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+  .nav a,.nav button{
+    display:flex;align-items:center;gap:14px;
+    padding:12px 14px;border-radius:14px;
+    font-weight:900;background:none;border:none;
+    cursor:pointer;text-align:left;
+  }
+  .nav a:hover,.nav button:hover{background:#f6f9ff}
+  .nav a.active{background:#1b56d7;color:#fff}
+
+  .groupHead{justify-content:space-between}
+  .submenu{margin-left:42px;display:none;flex-direction:column;gap:6px}
+  .submenu a{padding:10px 12px;border-radius:12px;font-weight:850}
+  .submenu a.active{background:#1b56d7;color:#fff}
+  .group.open .submenu{display:flex}
+
+  .main{flex:1}
+  .topbar{display:flex;justify-content:space-between;gap:14px;padding:6px 0 12px}
+  .search{
+    flex:1;max-width:620px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;display:flex;gap:12px;padding:10px 14px;
+  }
+
+  .foot{margin-top:16px;font-weight:950;opacity:.85}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">E</div>
+      <h2>EduConnect</h2>
+    </div>
+
+    <div class="nav">
+
+      <a href="{% url 'admin_panel:admin_dashboard' %}"
+         class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+        📊 Dashboard
+      </a>
+
+      <!-- USERS -->
+      <div class="group" id="grpUsers">
+        <button class="groupHead" data-toggle="grpUsers">👥 Users <span>▾</span></button>
+        <div class="submenu">
+          <a href="{% url 'admin_panel:admin_manage_students' %}"
+             class="{% if request.resolver_match.url_name == 'admin_manage_students' %}active{% endif %}">
+            Manage Students
+          </a>
+          <a href="{% url 'admin_panel:admin_manage_faculty' %}"
+             class="{% if request.resolver_match.url_name == 'admin_manage_faculty' %}active{% endif %}">
+            Manage Faculty
+          </a>
+          <a href="{% url 'admin_panel:admin_manage_parents' %}"
+             class="{% if request.resolver_match.url_name == 'admin_manage_parents' %}active{% endif %}">
+            Manage Parents
+          </a>
+        </div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div class="group" id="grpPayments">
+        <button class="groupHead" data-toggle="grpPayments">💳 Payments <span>▾</span></button>
+        <div class="submenu">
+          <a href="{% url 'admin_panel:admin_payment_history' %}">Payment History</a>
+          <a href="{% url 'admin_panel:admin_fee_packages' %}">Fee Packages</a>
+          <a href="{% url 'admin_panel:admin_refund_request' %}">Refund Request</a>
+        </div>
+      </div>
+
+      <a href="{% url 'admin_panel:admin_manage_courses' %}">📚 Manage Courses</a>
+      <a href="{% url 'admin_panel:admin_announcement' %}">📢 Announcement</a>
+      <a href="{% url 'admin_panel:admin_analytics_report' %}">📈 Analytics & Report</a>
+      <a href="{% url 'admin_panel:admin_enquiry' %}">❓ Enquiry</a>
+      <a href="{% url 'admin_panel:admin_settings' %}">⚙️ Settings</a>
+      <a href="{% url 'admin_panel:admin_logout' %}">🚪 Logout</a>
+    </div>
+
+    <div class="foot">© EduConnect</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="search"><input placeholder="Search"><span>🔍</span></div>
+      <strong>Admin 🙂</strong>
+    </div>
+
+    {% block admin_content %}{% endblock %}
+  </main>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.querySelectorAll('[data-toggle]').forEach(btn=>{
+    btn.onclick=()=>document.getElementById(btn.dataset.toggle).classList.toggle('open')
+  });
+  document.querySelectorAll('.group').forEach(g=>{
+    if(g.querySelector('.submenu .active')) g.classList.add('open')
+  });
+</script>
+{% endblock %}

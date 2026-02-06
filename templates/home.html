@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+{% block title %}EduConnect | Home{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root{
+    --bg:#f4f7ff;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --line:#e6ecff;
+    --blue:#1b56d7;
+    --blue2:#0b3ea8;
+    --orange:#ff7a18;
+    --shadow: 0 18px 40px rgba(15,23,42,.10);
+    --shadow2: 0 10px 25px rgba(15,23,42,.08);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#f7f9ff 0%, #eef3ff 100%);color:var(--text)}
+  a{text-decoration:none;color:inherit}
+  .container{max-width:1180px;margin:0 auto;padding:0 18px}
+
+  /* top nav */
+  .nav{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter: blur(8px);border-bottom:1px solid var(--line);z-index:50}
+  .navin{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:900}
+  .logo{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,#1b56d7,#ff7a18);
+    display:grid;place-items:center;color:#fff;font-weight:900;
+    box-shadow:0 10px 18px rgba(27,86,215,.22);
+  }
+  .menu{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .menu a{font-size:14px;color:#334155;padding:8px 10px;border-radius:10px}
+  .menu a.active{color:var(--blue);font-weight:800;border-bottom:2px solid var(--blue);border-radius:0;padding-bottom:14px}
+  .actions{display:flex;gap:10px;align-items:center}
+
+  .btn{
+    border:1px solid var(--line);
+    padding:10px 14px;border-radius:12px;font-weight:800;
+    background:#fff;cursor:pointer;
+    box-shadow:0 6px 18px rgba(15,23,42,.06);
+  }
+  .btn.blue{background:var(--blue);color:#fff;border-color:transparent}
+  .btn.blue:hover{background:var(--blue2)}
+  .btn.orange{background:var(--orange);color:#fff;border-color:transparent}
+  .btn.orange:hover{filter:brightness(.95)}
+  .btn.ghost{background:#fff;color:var(--blue)}
+  .btn.small{padding:9px 12px;border-radius:11px;font-size:14px}
+
+  /* dropdown */
+  .dd{position:relative}
+  .ddmenu{
+    position:absolute;right:0;top:44px;min-width:210px;
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    box-shadow: var(--shadow2);
+    overflow:hidden;display:none;
+  }
+  .ddmenu a{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;font-size:14px;color:#0f172a;
+    border-bottom:1px solid #f1f5ff;
+  }
+  .ddmenu a:last-child{border-bottom:0}
+  .ddmenu a:hover{background:#f6f9ff}
+  .dd.open .ddmenu{display:block}
+  .chip{
+    font-size:12px;font-weight:800;color:#0b3ea8;background:#eaf1ff;
+    padding:4px 8px;border-radius:999px
+  }
+
+  /* hero */
+  .hero{padding:36px 0 16px}
+  .heroWrap{
+    background:linear-gradient(180deg,#ffffff 0%, #f7f9ff 100%);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .heroGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;align-items:center;padding:34px}
+  .h1{font-size:44px;line-height:1.05;margin:0 0 10px;font-weight:950;color:#0b1b3a}
+  .sub{color:var(--muted);font-size:16px;margin:0 0 18px;max-width:520px}
+  .heroBtns{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+  .heroArt{display:flex;justify-content:center;align-items:center}
+  .heroArt img{
+    width:100%;max-width:520px;border-radius:18px;
+    box-shadow:0 14px 40px rgba(15,23,42,.12);
+    border:1px solid #eef3ff;
+  }
+
+  /* cards row */
+  .rowCards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+  .infoCard{
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:18px 18px;box-shadow:0 10px 25px rgba(15,23,42,.06);
+    display:flex;align-items:center;gap:14px
+  }
+  .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:900;color:#fff}
+  .ic.blue{background:linear-gradient(135deg,#1b56d7,#0b3ea8)}
+  .ic.orange{background:linear-gradient(135deg,#ff7a18,#ff5d00)}
+  .infoCard h3{margin:0;font-size:18px}
+  .infoCard p{margin:4px 0 10px;color:#64748b;font-size:13px}
+  .infoCard .btn{box-shadow:none}
+
+  /* section headings */
+  .section{margin:26px 0}
+  .secTitle{text-align:center}
+  .secTitle h2{margin:0;font-size:22px;font-weight:950;color:#0b1b3a}
+  .secTitle p{margin:8px 0 0;color:#64748b;font-size:13px}
+
+  /* feature strip */
+  .featureStrip{
+    margin-top:16px;background:#fff;border:1px solid var(--line);
+    border-radius:18px;box-shadow:0 12px 30px rgba(15,23,42,.06);
+    padding:16px
+  }
+  .featGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .feat{
+    padding:12px 10px;border-radius:14px;display:flex;gap:10px;align-items:flex-start;
+  }
+  .feat b{display:block;font-size:13px}
+  .feat span{display:block;font-size:12px;color:#64748b;margin-top:2px}
+  .ficon{
+    width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
+    background:#eef4ff;color:#0b3ea8;font-weight:900;border:1px solid #dbe7ff
+  }
+
+  /* split sections */
+  .split{
+    display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center;
+    margin-top:18px
+  }
+  .panel{
+    background:#fff;border:1px solid var(--line);border-radius:20px;
+    padding:18px;box-shadow:0 12px 28px rgba(15,23,42,.06)
+  }
+  .panel h3{margin:0 0 10px;font-size:18px;font-weight:950}
+  .ticks{margin:0;padding-left:18px;color:#334155}
+  .ticks li{margin:8px 0;font-size:13px}
+  .panel img{
+    width:100%;border-radius:16px;border:1px solid #eef3ff;
+    box-shadow:0 10px 25px rgba(15,23,42,.08)
+  }
+
+  /* safety */
+  .safeBox{
+    margin-top:18px;background:#fff;border:1px solid var(--line);
+    border-radius:20px;box-shadow:0 12px 28px rgba(15,23,42,.06);
+    padding:18px
+  }
+  .safeRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .safe{
+    border:1px solid #edf2ff;border-radius:16px;padding:14px;text-align:center;background:#fbfdff
+  }
+  .safe .sicon{
+    width:54px;height:54px;border-radius:18px;margin:0 auto 10px;
+    display:grid;place-items:center;background:#eef4ff;border:1px solid #dbe7ff;
+    font-weight:900;color:#0b3ea8
+  }
+  .safe b{display:block;font-size:13px}
+  .safe span{display:block;font-size:12px;color:#64748b;margin-top:4px}
+
+  /* bottom CTA */
+  .cta{
+    margin:22px 0 40px;
+    background:linear-gradient(90deg,#0b3ea8,#1b56d7);
+    border-radius:18px;padding:18px;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    color:#fff;box-shadow:0 18px 40px rgba(11,62,168,.22)
+  }
+  .cta h3{margin:0;font-size:18px;font-weight:950}
+  .ctaBtns{display:flex;gap:10px;flex-wrap:wrap}
+
+  /* responsive */
+  @media(max-width:980px){
+    .heroGrid{grid-template-columns:1fr;gap:18px}
+    .rowCards{grid-template-columns:1fr}
+    .featGrid{grid-template-columns:1fr 1fr}
+    .split{grid-template-columns:1fr}
+    .safeRow{grid-template-columns:1fr}
+    .menu{display:none}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="nav">
+  <div class="container">
+    <div class="navin">
+      <a class="brand" href="{% url 'home' %}">
+        <div class="logo">E</div>
+        <div>EduConnect</div>
+      </a>
+
+      <div class="menu" aria-label="Primary">
+        <a class="active" href="{% url 'home' %}">Home</a>
+        <a href="#how">How it Works</a>
+        <a href="#features">Features</a>
+        <a href="#students">For Students</a>
+        <a href="#parents">For Parents</a>
+        <a href="#faqs">FAQs</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="actions">
+        <div class="dd" id="ddLogin">
+          <button class="btn blue small" type="button" data-dd="ddLogin">Login / Register ▾</button>
+          <div class="ddmenu" role="menu">
+            <a href="{% url 'role_login' 'student' %}">Student Login <span class="chip">STUDENT</span></a>
+            <a href="{% url 'role_login' 'parent' %}">Parent Login <span class="chip">PARENT</span></a>
+            <a href="{% url 'role_login' 'faculty' %}">Faculty Login <span class="chip">FACULTY</span></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- HERO -->
+  <div class="hero" id="how">
+    <div class="heroWrap">
+      <div class="heroGrid">
+        <div>
+          <h1 class="h1">Empowering Students.<br/>Connecting Parents.</h1>
+          <p class="sub">Your complete digital learning platform for classes, assignments, quizzes, progress tracking and parent engagement.</p>
+
+          <div class="heroBtns">
+            <a class="btn orange" href="{% url 'role_register' 'student' %}">Get Started</a>
+            <a class="btn blue" href="#features">Learn More</a>
+          </div>
+        </div>
+
+        <div class="heroArt">
+          <img src="/static/img/homepage_ref.png" alt="EduConnect Hero">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT/PARENT CARDS -->
+  <div class="rowCards">
+    <div class="infoCard">
+      <div class="ic blue">🎓</div>
+      <div style="flex:1">
+        <h3>For Students</h3>
+        <p>Learn, attend live classes, submit assignments, track your progress.</p>
+        <a class="btn orange small" href="#students">Explore More</a>
+      </div>
+    </div>
+
+    <div class="infoCard">
+      <div class="ic orange">👨‍👩‍👧</div>
+      <div style="flex:1">
+        <h3>For Parents</h3>
+        <p>Monitor attendance, grades & fees. Stay informed and engaged.</p>
+        <a class="btn blue small" href="#parents">Learn More</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY FEATURES -->
+  <div class="section" id="features">
+    <div class="secTitle">
+      <h2>Key Features of EduConnect</h2>
+      <p>Everything you need for a successful learning journey</p>
+    </div>
+
+    <div class="featureStrip">
+      <div class="featGrid">
+        <div class="feat">
+          <div class="ficon">📚</div>
+          <div><b>Explore Courses</b><span>Browse & enroll easily</span></div>
+        </div>
+        <div class="feat">
+          <div class="ficon">🧑‍🏫</div>
+          <div><b>Live Classes</b><span>Join interactive lessons</span></div>
+        </div>
+        <div class="feat">
+          <div class="ficon">📝</div>
+          <div><b>Assignments & Quizzes</b><span>Submit & review results</span></div>
+        </div>
+        <div class="feat">
+          <div class="ficon">📈</div>
+          <div><b>Progress Tracking</b><span>Monitor performance</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOR STUDENTS -->
+  <div class="section" id="students">
+    <div class="split">
+      <div class="panel">
+        <h3>For Students: Learn & Succeed</h3>
+        <ul class="ticks">
+          <li>Access your courses & materials</li>
+          <li>Join live classes anytime, anywhere</li>
+          <li>Track your progress & grades</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <img src="/static/img/homepage_ref.png" alt="Students Preview">
+      </div>
+    </div>
+  </div>
+
+  <!-- FOR PARENTS -->
+  <div class="section" id="parents">
+    <div class="split">
+      <div class="panel">
+        <img src="/static/img/homepage_ref.png" alt="Parents Preview">
+      </div>
+
+      <div class="panel">
+        <h3>For Parents: Stay Involved & Informed</h3>
+        <ul class="ticks">
+          <li>View your child's grades & attendance</li>
+          <li>Manage fees & payments</li>
+          <li>Receive important announcements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAFE -->
+  <div class="section">
+    <div class="secTitle">
+      <h2>Safe, Secure & Reliable</h2>
+      <p>Your data is protected with advanced security measures</p>
+    </div>
+
+    <div class="safeBox">
+      <div class="safeRow">
+        <div class="safe">
+          <div class="sicon">🛡️</div>
+          <b>Data Privacy</b>
+          <span>Protected access & privacy</span>
+        </div>
+        <div class="safe">
+          <div class="sicon">🔒</div>
+          <b>Secure Access</b>
+          <span>Session-based security</span>
+        </div>
+        <div class="safe">
+          <div class="sicon">🎧</div>
+          <b>Dedicated Support</b>
+          <span>Help when you need it</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div class="cta" id="contact">
+    <h3>Join EduConnect Today!</h3>
+    <div class="ctaBtns">
+      <a class="btn orange" href="{% url 'role_login' 'student' %}">Student Login</a>
+      <a class="btn blue" href="{% url 'role_login' 'parent' %}">Parent Login</a>
+      <a class="btn ghost" style="color:#0b3ea8" href="{% url 'role_login' 'faculty' %}">Faculty Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function(){
+    function closeAll(){
+      document.querySelectorAll('.dd.open').forEach(d => d.classList.remove('open'));
+    }
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest('[data-dd]');
+      if(btn){
+        const id = btn.getAttribute('data-dd');
+        const box = document.getElementById(id);
+        const isOpen = box.classList.contains('open');
+        closeAll();
+        if(!isOpen){ box.classList.add('open'); }
+        return;
+      }
+      if(!e.target.closest('.dd')) closeAll();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeAll();
+    });
+  })();
+</script>
+{% endblock %}

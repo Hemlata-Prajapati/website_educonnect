@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}{% block parent_title %}Parent | EduConnect{% endblock %}{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root{
+    --bg:#eaf0ff;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --line:#e3e9ff;
+    --blue:#1b56d7;
+    --shadow2:0 10px 25px rgba(15,23,42,.08);
+  }
+  body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
+  *{box-sizing:border-box}
+  a{text-decoration:none;color:inherit}
+
+  .layout{display:flex;min-height:100vh;gap:22px;padding:22px}
+
+  /* sidebar */
+  .sidebar{
+    width:300px;flex:0 0 300px;background:rgba(255,255,255,.9);
+    border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow2);
+    padding:18px 16px;position:sticky;top:18px;height:calc(100vh - 44px);overflow:auto;
+  }
+  .brand{display:flex;align-items:center;gap:12px;padding:10px 10px 16px}
+  .logo{
+    width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,#1b56d7,#ff7a18);
+    display:grid;place-items:center;color:#fff;font-weight:950;box-shadow:0 10px 22px rgba(27,86,215,.22)
+  }
+  .brand h2{margin:0;font-size:30px;font-weight:900}
+  .hamb{position:absolute;right:16px;top:16px;color:#60a5fa;font-weight:950}
+  .nav{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+  .nav a{
+    display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;
+    color:#0f172a;font-weight:850;border:1px solid transparent;
+  }
+  .nav a .ico{
+    width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+    background:#fff;border:1px solid var(--line);box-shadow:0 6px 16px rgba(15,23,42,.05);
+    font-size:18px;
+  }
+  .nav a.active{background:#1b56d7;color:#fff}
+  .nav a.active .ico{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35)}
+  .nav a:hover{background:#f6f9ff}
+
+  /* main */
+  .main{flex:1}
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:6px 0 12px;
+  }
+  .titleRow{display:flex;align-items:center;gap:10px}
+  .titleRow h1{margin:0;font-size:34px;font-weight:950}
+  .search{
+    flex:1;max-width:680px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;box-shadow:var(--shadow2);display:flex;align-items:center;gap:12px;
+    padding:10px 14px;
+  }
+  .search input{border:0;outline:none;width:100%;font-size:14px;background:transparent}
+  .sico{width:32px;height:32px;border-radius:999px;background:#eef4ff;display:grid;place-items:center}
+  .avatar{
+    width:54px;height:54px;border-radius:999px;background:linear-gradient(135deg,#1b56d7,#60a5fa);
+    display:grid;place-items:center;color:#fff;font-weight:950;
+    box-shadow:0 14px 26px rgba(15,23,42,.12)
+  }
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow2)}
+  .pad{padding:18px}
+
+  @media(max-width:1100px){
+    .layout{flex-direction:column}
+    .sidebar{width:100%;position:relative;height:auto}
+  }
+</style>
+{% block parent_extra_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="hamb">≡</div>
+    <div class="brand">
+      <div class="logo">E</div>
+      <h2>EduConnect</h2>
+    </div>
+
+<nav class="nav">
+  <a class="{% if request.path == '/parent/dashboard/' %}active{% endif %}" href="{% url 'parent_app:dashboard' %}">
+    <div class="ico">▦</div> <span>Dashboard</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/student-overview/' %}active{% endif %}" href="{% url 'parent_app:student_overview' %}">
+    <div class="ico">📄</div> <span>Student Overview</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/attendance-monitoring/' %}active{% endif %}" href="{% url 'parent_app:attendance_monitoring' %}">
+    <div class="ico">🧑‍🎓</div> <span>Attendance Monitoring</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/performance-reports/' %}active{% endif %}" href="{% url 'parent_app:performance_reports' %}">
+    <div class="ico">📈</div> <span>Performance & Reports</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/fees-payments/' %}active{% endif %}" href="{% url 'parent_app:fees_payments' %}">
+    <div class="ico">💳</div> <span>Fees & Payments</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/exam-results/' %}active{% endif %}" href="{% url 'parent_app:exam_results' %}">
+    <div class="ico">🧾</div> <span>Exam Results</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/announcement/' %}active{% endif %}" href="{% url 'parent_app:announcement' %}">
+    <div class="ico">📣</div> <span>Announcement</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/enquiry/' %}active{% endif %}" href="{% url 'parent_app:enquiry' %}">
+    <div class="ico">👥</div> <span>Enquiry</span>
+  </a>
+
+  <a class="{% if request.path == '/parent/settings/' %}active{% endif %}" href="{% url 'parent_app:settings' %}">
+    <div class="ico">⚙️</div> <span>Settings</span>
+  </a>
+
+  <a href="{% url 'logout' %}">
+    <div class="ico">🚪</div> <span>Logout</span>
+  </a>
+</nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="titleRow">
+        <div style="font-size:30px">👨‍👩‍👧</div>
+        <h1>Parent Dashboard</h1>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;flex:1;justify-content:flex-end">
+        <div class="search">
+          <input type="text" placeholder="Search" />
+          <div class="sico">🔍</div>
+        </div>
+        <div class="avatar" title="Profile">🙂</div>
+      </div>
+    </div>
+
+    {% block parent_content %}{% endblock %}
+  </main>
+
+</div>
+{% endblock %}

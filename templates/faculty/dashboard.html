@@ -1,0 +1,328 @@
+{% extends "faculty/base_faculty.html" %}
+{% block faculty_title %}Faculty Dashboard | EduConnect{% endblock %}
+
+{% block faculty_extra_css %}
+<style>
+  .sectionTitle{font-size:18px;font-weight:950;margin:8px 0 14px}
+
+  /* overview cards */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .kpi{
+    border-radius:18px;border:1px solid #dbe7ff;background:#fff;
+    box-shadow:0 14px 30px rgba(15,23,42,.08);
+    padding:14px 14px 12px;min-height:105px;position:relative;overflow:hidden;
+  }
+  .kpi .row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .kpi .icon{
+    width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
+    border:1px solid #e6ecff;background:#fbfdff;font-size:18px
+  }
+  .kpi .label{font-size:13px;font-weight:900;color:#0f172a;margin-top:4px}
+  .kpi .num{font-size:34px;font-weight:950;margin-top:10px}
+  .kpi .bar{
+    position:absolute;left:14px;bottom:12px;height:3px;width:42%;
+    border-radius:999px;background:#1b56d7;
+  }
+  .kpi.red .bar{background:#e11d48}
+  .kpi.green .bar{background:#10b981}
+  .kpi.pink .bar{background:#a855f7}
+
+  .kpi.blueBg{background:#eef0ff}
+  .kpi.redBg{background:#fdecef}
+  .kpi.greenBg{background:#e9faf5}
+  .kpi.pinkBg{background:#f6ebff}
+
+  /* mid row */
+  .mid{display:grid;grid-template-columns:1.1fr 1.4fr .9fr;gap:16px;margin-top:16px}
+  .cardHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .cardHead h3{margin:0;font-size:20px;font-weight:950}
+  .muted{color:#64748b;font-size:12px;font-weight:800}
+
+  /* donut placeholder */
+  .donutWrap{display:flex;justify-content:center;align-items:center;padding:10px 0}
+  .donut{
+    width:170px;height:170px;border-radius:999px;
+    background:conic-gradient(#0b3ea8 0 88%, #cfe0ff 88% 100%);
+    display:grid;place-items:center;border:10px solid #fff;box-shadow:0 10px 22px rgba(15,23,42,.08);
+  }
+  .donut .inner{
+    width:110px;height:110px;border-radius:999px;background:#fff;
+    display:grid;place-items:center;text-align:center;border:1px solid #eef3ff
+  }
+  .donut .inner b{display:block;font-size:22px}
+  .legend{display:flex;justify-content:center;gap:14px;margin-top:8px;color:#0f172a;font-size:12px;font-weight:900}
+  .dot{width:10px;height:10px;border-radius:999px;display:inline-block;margin-right:6px}
+  .dot.blue{background:#0b3ea8}
+  .dot.light{background:#cfe0ff}
+
+  /* recent activity */
+  .list{border-top:1px solid #eef3ff;margin-top:6px}
+  .item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #eef3ff}
+  .item:last-child{border-bottom:0}
+  .ileft{display:flex;gap:10px;align-items:flex-start}
+  .iico{
+    width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
+    background:#f1f5ff;border:1px solid #e6ecff
+  }
+  .itxt b{display:block;font-size:13px}
+  .itxt span{display:block;color:#64748b;font-size:12px;margin-top:2px}
+  .itime{color:#64748b;font-size:12px;white-space:nowrap}
+
+  /* calendar */
+  .calendarHead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .calTitle{font-size:24px;font-weight:950;margin:0}
+  .today{font-weight:950}
+  .calBox{margin-top:10px;border-top:1px solid #eef3ff;padding-top:10px}
+  .calTop{display:flex;align-items:center;justify-content:space-between;color:#0f172a;font-weight:900}
+  .calGrid{margin-top:10px;display:grid;grid-template-columns:repeat(7,1fr);gap:8px;font-size:12px;color:#334155;text-align:center}
+  .calGrid .d{padding:6px 0;border-radius:10px}
+  .calGrid .mut{color:#94a3b8}
+  .calGrid .sel{background:#eaf1ff;color:#0b3ea8;font-weight:950}
+  .events{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+  .evt{
+    background:#e7f7fb;border:1px solid #d6f0f7;border-radius:12px;padding:10px;
+    font-size:12px;color:#0f172a
+  }
+  .evt.red{background:#ffecec;border-color:#ffd3d3}
+  .evt b{display:block}
+  .evt span{display:block;color:#64748b;margin-top:2px}
+
+  /* schedule + notes */
+  .bottom{display:grid;grid-template-columns:1.8fr .9fr;gap:16px;margin-top:16px}
+  .timeline{
+    margin-top:12px;height:5px;border-radius:999px;background:#dbe7ff;position:relative;
+  }
+  .dotT{
+    width:14px;height:14px;border-radius:999px;position:absolute;top:50%;transform:translate(-50%,-50%);
+    border:3px solid #fff;box-shadow:0 10px 18px rgba(15,23,42,.14)
+  }
+  .dotT.p1{left:12%;background:#6d5bff}
+  .dotT.p2{left:34%;background:#00b3a6}
+  .dotT.p3{left:52%;background:#0b3ea8}
+  .dotT.p4{left:72%;background:#7c9a2f}
+  .dotT.p5{left:90%;background:#123d6a}
+
+  .times{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+  .times .t{font-size:12px;color:#0f172a;font-weight:900;text-align:center}
+  .subt{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+  .subt .s{font-size:12px;text-align:center}
+  .subt .s b{display:block;font-weight:950}
+  .subt .s span{display:block;color:#64748b;margin-top:2px}
+
+  .link{color:#1b56d7;font-weight:950;margin-top:10px;display:inline-block}
+
+  .notesBox textarea{
+    width:100%;height:130px;resize:none;border:0;outline:none;font-size:13px;
+    padding:8px 0;background:transparent;color:#0f172a
+  }
+  .notesBox .ph{color:#94a3b8;font-size:12px;margin-top:-6px}
+
+  @media(max-width:1200px){
+    .kpis{grid-template-columns:1fr 1fr}
+    .mid{grid-template-columns:1fr}
+    .bottom{grid-template-columns:1fr}
+  }
+</style>
+{% endblock %}
+
+{% block faculty_content %}
+  <div class="sectionTitle">Overview</div>
+
+  <!-- KPI -->
+  <section class="kpis">
+    <div class="kpi blueBg">
+      <div class="row">
+        <div class="icon">🗂️</div>
+      </div>
+      <div class="label">Number of classes<br/>assigned today</div>
+      <div class="num">5</div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="kpi redBg red">
+      <div class="row">
+        <div class="icon">⏳</div>
+      </div>
+      <div class="label">Pending Tasks</div>
+      <div class="num">3</div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="kpi greenBg green">
+      <div class="row">
+        <div class="icon">📢</div>
+      </div>
+      <div class="label">Announcements</div>
+      <div class="num">2</div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="kpi pinkBg pink">
+      <div class="row">
+        <div class="icon">📅</div>
+      </div>
+      <div class="label">Upcoming Events</div>
+      <div class="num">1</div>
+      <div class="bar"></div>
+    </div>
+  </section>
+
+  <!-- Mid row -->
+  <section class="mid">
+    <!-- Working days -->
+    <div class="card pad">
+      <div class="cardHead">
+        <h3>My Working Days</h3>
+        <div class="muted">01-30 Sept 2025</div>
+      </div>
+
+      <div class="donutWrap">
+        <div class="donut">
+          <div class="inner">
+            <div class="muted" style="font-weight:900">Total working<br/>days: 27</div>
+            <b>98%</b>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <div><span class="dot blue"></span>Present-25 days</div>
+        <div><span class="dot light"></span>Leave-2 days</div>
+      </div>
+    </div>
+
+    <!-- Recent activity -->
+    <div class="card pad">
+      <div class="cardHead">
+        <h3>Recent Activity</h3>
+        <div class="muted">Today</div>
+      </div>
+
+      <div class="list">
+        <div class="item">
+          <div class="ileft">
+            <div class="iico">📝</div>
+            <div class="itxt">
+              <b>Rahul Sharma ( Class 10 A )</b>
+              <span>submitted Assignment2-Science</span>
+            </div>
+          </div>
+          <div class="itime">9 min ago</div>
+        </div>
+
+        <div class="item">
+          <div class="ileft">
+            <div class="iico">✅</div>
+            <div class="itxt">
+              <b>Aarav Singh (Class 7 B) scored</b>
+              <span>18/20 on Maths Quiz</span>
+            </div>
+          </div>
+          <div class="itime">45 min ago</div>
+        </div>
+
+        <div class="item">
+          <div class="ileft">
+            <div class="iico">📩</div>
+            <div class="itxt">
+              <b>Mrs. Sharma (Parent of Rohan,</b>
+              <span>Class 4 B) requested a PTM appointment</span>
+            </div>
+          </div>
+          <div class="itime">2 hour ago</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="card pad">
+      <div class="calendarHead">
+        <div class="calTitle">Calender</div>
+        <div class="today">Today</div>
+      </div>
+
+      <div class="calBox">
+        <div class="calTop">
+          <div>September 22, 2025</div>
+          <div>‹ ›</div>
+        </div>
+
+        <div class="calGrid" style="margin-top:12px;color:#64748b;font-weight:900">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <div class="calGrid">
+          <div class="d mut"></div>
+          <div class="d">1</div><div class="d">2</div><div class="d">3</div><div class="d">4</div><div class="d">5</div><div class="d">6</div>
+          <div class="d">7</div><div class="d">8</div><div class="d">9</div><div class="d">10</div><div class="d">11</div><div class="d">12</div><div class="d">13</div>
+          <div class="d">14</div><div class="d">15</div><div class="d">16</div><div class="d">17</div><div class="d">18</div><div class="d">19</div><div class="d">20</div>
+          <div class="d">21</div><div class="d sel">22</div><div class="d">23</div><div class="d">24</div><div class="d">25</div><div class="d">26</div><div class="d">27</div>
+          <div class="d">28</div><div class="d">29</div><div class="d">30</div><div class="d mut"></div><div class="d mut"></div><div class="d mut"></div><div class="d mut"></div>
+        </div>
+
+        <div class="events">
+          <div class="evt">
+            <b>08 Sept, 2025</b>
+            <span>Quarterly Exams</span>
+          </div>
+          <div class="evt">
+            <b>17 Sept, 2025</b>
+            <span>End of Exams</span>
+          </div>
+          <div class="evt">
+            <b>27 Sept, 2025</b>
+            <span>Parents Teacher Meeting</span>
+          </div>
+          <div class="evt red">
+            <b>Holiday</b>
+            <span>—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom row -->
+  <section class="bottom">
+    <!-- Today's Schedule -->
+    <div class="card pad">
+      <div class="cardHead">
+        <h3>Today's Schedule</h3>
+      </div>
+
+      <div class="times">
+        <div class="t">09:00 am -<br/>10:00 am</div>
+        <div class="t">10:00 am -<br/>12:00 pm</div>
+        <div class="t">12:00 pm -<br/>01:00 pm</div>
+        <div class="t">02:00 pm -<br/>03:00 pm</div>
+        <div class="t">03:00 pm -<br/>05:00 pm</div>
+      </div>
+
+      <div class="timeline">
+        <span class="dotT p1"></span>
+        <span class="dotT p2"></span>
+        <span class="dotT p3"></span>
+        <span class="dotT p4"></span>
+        <span class="dotT p5"></span>
+      </div>
+
+      <div class="subt">
+        <div class="s"><b>Maths</b><span>Class-VII</span></div>
+        <div class="s"><b>Science Lab</b><span>Class-X</span></div>
+        <div class="s"><b>Maths</b><span>Class-VIII</span></div>
+        <div class="s"><b>Science</b><span>Class-IX</span></div>
+        <div class="s"><b>Maths Lab</b><span>Class-XI</span></div>
+      </div>
+
+      <a class="link" href="#" title="Placeholder">Start Live Class</a>
+    </div>
+
+    <!-- Notes -->
+    <div class="card pad notesBox">
+      <div class="cardHead">
+        <h3>Notes</h3>
+      </div>
+      <div class="ph">Type your notes here...</div>
+      <textarea></textarea>
+    </div>
+  </section>
+{% endblock %}
