@@ -1,0 +1,274 @@
+{% extends "student/base_student.html" %}
+
+{% block student_content %}
+
+<style>
+
+.assignment-container{
+display:flex;
+flex-direction:column;
+gap:18px;
+}
+
+.assignment-card{
+background:white;
+padding:20px;
+border-radius:16px;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+border:1px solid #e5e7eb;
+}
+
+.assignment-header{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:10px;
+}
+
+.assignment-icon{
+width:45px;
+height:45px;
+border-radius:12px;
+background:#e0edff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+color:#1e40af;
+font-size:20px;
+}
+
+.assignment-title{
+font-size:18px;
+font-weight:600;
+}
+
+.assignment-meta{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:10px;
+font-size:14px;
+}
+
+.assignment-footer{
+margin-top:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.status{
+padding:6px 12px;
+border-radius:10px;
+font-size:13px;
+font-weight:600;
+background:#fde68a;
+}
+
+.assignment-footer button{
+background:#2563eb;
+color:white;
+border:none;
+padding:8px 16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.modal-overlay{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+backdrop-filter: blur(4px);
+z-index:999;
+}
+
+.modal-box{
+background:#ffffff;
+width:480px;
+padding:30px;
+border-radius:18px;
+margin:120px auto;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.modal-title{
+font-size:22px;
+font-weight:600;
+margin-bottom:10px;
+}
+
+.modal-desc{
+color:#64748b;
+margin-bottom:15px;
+}
+
+.modal-due{
+font-size:14px;
+margin-bottom:20px;
+}
+
+.upload-box{
+border:2px dashed #cbd5e1;
+padding:20px;
+border-radius:12px;
+text-align:center;
+margin-bottom:20px;
+}
+
+.modal-actions{
+display:flex;
+justify-content:flex-end;
+gap:10px;
+}
+
+.modal-actions button{
+padding:8px 18px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+}
+
+.submit-btn{
+background:#2563eb;
+color:white;
+}
+
+.close-btn{
+background:#e5e7eb;
+}
+
+</style>
+
+
+<h2 style="margin-bottom:20px;">Assignments</h2>
+
+<div class="assignment-container">
+
+{% for assignment in assignments %}
+
+<div class="assignment-card">
+
+<div class="assignment-header">
+
+<div class="assignment-icon">
+{{ assignment.subject|slice:":1" }}
+</div>
+
+<div>
+
+<div class="assignment-title">
+{{ assignment.title }}
+</div>
+
+<p>{{ assignment.description }}</p>
+
+</div>
+
+</div>
+
+<div class="assignment-meta">
+
+<p><b>Subject:</b>{{ assignment.subject }} </p>
+<p><b>Faculty:</b> {{ assignment.faculty }}</p>
+<p><b>Due:</b> {{ assignment.due_date }}</p>
+<p><b>Total Marks:</b> {{ assignment.total_marks }}</p>
+
+</div>
+
+<div class="assignment-footer">
+
+{% if assignment.id in submitted_ids %}
+<span class="status" style="background:#bbf7d0;">Submitted</span>
+{% else %}
+<span class="status">Pending</span>
+{% endif %}
+{% if assignment.id in submitted_ids %}
+<button style="background:gray; cursor:not-allowed;">
+✔ Submission Done
+</button>
+{% else %}
+<button
+data-id="{{ assignment.id }}"
+data-title="{{ assignment.title }}"
+data-description="{{ assignment.description }}"
+data-due="{{ assignment.due_date }}"
+data-pdf="{% if assignment.question_file %}{{ assignment.question_file.url }}{% endif %}"
+data-questions="{% for q in assignment.questions.all %}Q{{ forloop.counter }}: {{ q.question_text }}||{% endfor %}"
+data-submitted="{% if assignment.id in submitted_ids %}yes{% else %}no{% endif %}"
+onclick="viewAssignment(this)">
+View Details
+</button>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+
+
+<!-- MODAL -->
+
+<div id="assignmentModal" class="modal-overlay">
+
+<div class="modal-box">
+
+<div class="modal-title" id="modalTitle"></div>
+
+<div class="modal-desc" id="modalDescription"></div>
+
+<h4>Questions</h4>
+
+<div id="pdfFile" style="margin-bottom:15px;"></div>
+<div id="modalQuestions"></div>
+
+<div id="modalAnswers"></div>
+
+
+<div class="modal-due">
+<b>Due Date:</b> <span id="modalDue"></span>
+</div>
+
+<form id="submitForm" method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+<input type="hidden" name="answers_present" value="yes">
+
+<div id="modalAnswers"></div>
+<div class="upload-box">
+<input type="file" name="file">
+</div>
+
+<div class="modal-actions">
+
+<button type="submit" class="submit-btn">
+Submit Assignment
+</button>
+
+<button type="button" class="close-btn" onclick="closeModal()">
+Close
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+
+
+
+
+{% endblock %}

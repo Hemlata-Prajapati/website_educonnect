@@ -43,12 +43,13 @@ def role_login(request: HttpRequest, role: str) -> HttpResponse:
         email = (request.POST.get("email") or "").strip()
         password = request.POST.get("password") or ""
 
-        user = authenticate(request, username=email, password=password)
-        if user is None:
-            try:
-                user = authenticate(request, email=email, password=password)
-            except TypeError:
-                user = None
+        # 🔥 FIXED LOGIN LOGIC
+
+        user_obj = User.objects.filter(email=email).first()
+        if user_obj:
+            user = authenticate(request, username=user_obj.username, password=password)
+        else:
+            user = None
 
         if user is None:
             messages.error(request, "Invalid email or password")

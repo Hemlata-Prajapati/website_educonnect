@@ -52,11 +52,11 @@
     </div>
 
     {% if messages %}
-      <div class="msg">
-        {% for m in messages %}
-          <div class="e">{{ m }}</div>
+        {% for message in messages %}
+            {% if "login" in message.tags %}
+                <div>{{ message }}</div>
+            {% endif %}
         {% endfor %}
-      </div>
     {% endif %}
 
     <form method="post">
